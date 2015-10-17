@@ -13,6 +13,9 @@
   :maintainer "Janne Pakarinen <gingeralesy@gmail.com>"
   :description "Weekly planner for projects and events."
   :homepage "https://github.com/gingeralesy/warbler"
+  :build-operation "qt-program-op"
+  :build-pathname "warbler"
+  :entry-point "warbler:main"
   :serial T
   :components ((:file "packages")
                (:file "warbler"))
