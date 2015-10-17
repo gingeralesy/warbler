@@ -11,8 +11,17 @@
 
 (defvar *window*)
 
-(define-widget central-area (QWidget)
-  ())
+(define-widget hours-table (QTableWidget)
+  ((columns :initarg :days :reader columns)
+   (time-unit :initarg :time-unit :reader time-unit))
+  (:default-initargs :days 7 :time-unit 'hours))
+
+(define-initializer (hours-table setup)
+  (setf (q+:column-count hours-table) columns)
+  (if (eql time-unit 'half-hours)
+      (setf (q+:row-count hours-table) 48)
+      (setf (q+:row-count hours-table) 24))
+  (setf (q+:show-grid hours-table) T))
 
 (define-widget dock-container (QDockWidget)
   ((widget :initarg :widget :reader widget)
@@ -36,11 +45,11 @@
                                    (asdf:find-system :warbler))))
   (q+:resize main-window 800 600))
 
-(define-subwidget (main-window central-area) (make-instance 'central-area))
+(define-subwidget (main-window daytable) (make-instance 'hours-table))
 
 (define-subwidget (main-window dockable)
                   (make-instance 'dock-container
-                                 :widget central-area
+                                 :widget daytable
                                  :title "Week")
   (q+:add-dock-widget main-window (q+:qt.bottom-dock-widget-area) dockable))
 
