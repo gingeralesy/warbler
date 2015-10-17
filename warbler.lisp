@@ -21,6 +21,11 @@
     :widget (error "WIDGET required.")
     :title ""))
 
+(define-initializer (dock-container setup)
+  (setf (q+:widget dock-container) widget)
+  (setf (q+:window-title dock-container) title)
+  (setf (q+:features dock-container) (q+:qdockwidget.dock-widget-movable)))
+
 (define-widget main-window (QMainWindow)
   ())
 
@@ -31,17 +36,12 @@
                                    (asdf:find-system :warbler))))
   (q+:resize main-window 800 600))
 
-(define-initializer (dock-container setup)
-  (setf (q+:widget dock-container) widget)
-  (setf (q+:window-title dock-container) title)
-  (setf (q+:features dock-container) (q+:qdockwidget.dock-widget-movable)))
-
 (define-subwidget (main-window central-area) (make-instance 'central-area))
 
 (define-subwidget (main-window dockable)
                   (make-instance 'dock-container
                                  :widget central-area
-                                 :title "")
+                                 :title "Week")
   (q+:add-dock-widget main-window (q+:qt.bottom-dock-widget-area) dockable))
 
 (define-menu (main-window File)
