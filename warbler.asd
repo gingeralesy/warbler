@@ -19,6 +19,5 @@
   :defsystem-depends-on (:qtools)
   :depends-on (:qtools
                :qtcore
-               :qtgui
-               :q+)) ;; TODO: remove q+ at some point
+               :qtgui))
 
