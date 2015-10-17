@@ -9,7 +9,7 @@
 
 ;; Qt widgets here
 
-(defvar *window*)
+(defvar *window* NIL)
 
 (define-widget hours-table (QTableWidget)
   ((columns :initarg :days :reader columns)
@@ -61,5 +61,5 @@
 
 (defun main ()
   "Starts up the Warbler program"
-  (let ((*window*))
-    (with-main-window (w 'main-window))))
+  (with-main-window (w 'main-window)
+    :blocking NIL))
