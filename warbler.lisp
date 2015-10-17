@@ -24,27 +24,25 @@
 (define-widget main-window (QMainWindow)
   ())
 
-(define-initializer (main-window init-window-system 100)
-  (unless (boundp '*window*)
-    (error "Tried to create main window without the proper context!"))
-  (when *window*
-    (error "A main window instance is already active!"))
-  (setf *window* main-window))
-
-(define-initializer (main-window setup)
+(define-initializer (main-window set-main 100)
+  (setf *window* main-window)
   (setf (q+:window-title main-window)
         (format NIL "Warbler v~a" (asdf:component-version
                                    (asdf:find-system :warbler))))
   (q+:resize main-window 800 600))
 
+(define-initializer (dock-container setup)
+  (setf (q+:widget dock-container) widget)
+  (setf (q+:window-title dock-container) title)
+  (setf (q+:features dock-container) (q+:qdockwidget.dock-widget-movable)))
+
 (define-subwidget (main-window central-area) (make-instance 'central-area))
 
-(define-subwidget (main-window layout-container) (q+:make-qwidget)
-  (let ((layout (q+:make-qhboxlayout layout-container)))
-    (setf (q+:margin layout) 0)
-    (setf (q+:spacing layout) 0)
-    (q+:add-widget layout central-area))
-  (setf (q+:central-widget main-window) layout-container))
+(define-subwidget (main-window dockable)
+                  (make-instance 'dock-container
+                                 :widget central-area
+                                 :title "")
+  (q+:add-dock-widget main-window (q+:qt.bottom-dock-widget-area) dockable))
 
 (define-menu (main-window File)
   (:item ("Quit" (ctrl q))
@@ -54,14 +52,5 @@
 
 (defun main ()
   "Starts up the Warbler program"
-  #+:sbcl (sb-ext:disable-debugger)
-  (qt:make-qapplication)
-  (format t " ** Warbler launching.~%")
-  (let* ((*window*)
-         (window (make-instance 'main-window)))
-    (q+:show window)
-    (format t " ** Warbler finished with ~a.~%"
-            (q+:exec *qapplication*))
-    (finalize window)
-    (trivial-garbage:gc :full T)
-    NIL))
+  (let ((*window*))
+    (with-main-window (w 'main-window))))
