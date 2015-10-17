@@ -11,6 +11,16 @@
 
 (defvar *window*)
 
+(define-widget central-area (QWidget)
+  ())
+
+(define-widget dock-container (QDockWidget)
+  ((widget :initarg :widget :reader widget)
+   (title :initarg :title :reader title))
+  (:default-initargs
+    :widget (error "WIDGET required.")
+    :title ""))
+
 (define-widget main-window (QMainWindow)
   ())
 
@@ -25,18 +35,26 @@
   (setf (q+:window-title main-window)
         (format NIL "Warbler v~a" (asdf:component-version
                                    (asdf:find-system :warbler))))
-  (q+:resize main-window 500 500))
+  (q+:resize main-window 800 600))
 
-(define-subwidget (main-window name) (q+:make-qlineedit main-window)
-  (setf (q+:placeholder-text name) "This is a placeholder widget."))
+(define-subwidget (main-window central-area) (make-instance 'central-area))
 
-(define-subwidget (main-window layout) (q+:make-qhboxlayout main-window)
-  (q+:add-widget layout name))
+(define-subwidget (main-window layout-container) (q+:make-qwidget)
+  (let ((layout (q+:make-qhboxlayout layout-container)))
+    (setf (q+:margin layout) 0)
+    (setf (q+:spacing layout) 0)
+    (q+:add-widget layout central-area))
+  (setf (q+:central-widget main-window) layout-container))
+
+(define-menu (main-window File)
+  (:item ("Quit" (ctrl q))
+         (q+:close main-window)))
 
 ;; Main
 
 (defun main ()
   "Starts up the Warbler program"
+  #+:sbcl (sb-ext:disable-debugger)
   (qt:make-qapplication)
   (format t " ** Warbler launching.~%")
   (let* ((*window*)

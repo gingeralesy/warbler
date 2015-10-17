@@ -12,8 +12,10 @@
   :maintainer "Janne Pakarinen <gingeralesy@gmail.com>"
   :description "Weekly planner for projects and events."
   :homepage "https://github.com/gingeralesy/warbler"
+  :serial T
   :components ((:file "packages")
                (:file "warbler"))
+  :defsystem-depends-on (:qtools)
   :depends-on (:qtools
                :qtcore
                :qtgui
