@@ -8,6 +8,7 @@
 (asdf:defsystem "warbler"
   :name "Warbler"
   :version "0.0.0"
+  :license "GNU General Public License v3.0"
   :author "Janne Pakarinen <gingeralesy@gmail.com>"
   :maintainer "Janne Pakarinen <gingeralesy@gmail.com>"
   :description "Weekly planner for projects and events."
