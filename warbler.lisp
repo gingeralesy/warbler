@@ -1,14 +1,18 @@
+#|
+ This file is part of Warbler Weekly Planner
+ (c) 2015 Janne Pakarinen
+ Author: Janne Pakarinen <gingeralesy@gmail.com>
+ |#
 
-(defpackage :warbler
-  (:documentation "UI for doing weekly planning.")
-  (:use #:cl+qt)
-  (:export #:main))
-
-(in-package :warbler)
+(in-package #:org.gingeralesy.warbler)
+(named-readtables:in-readtable :qtools)
 
 ;; Main
 
 (defun main ()
   "Starts up the Warbler program"
-  (print "Hello, World!"))
+  (with-main-window (window (make-instance 'main-window))))
+
+(define-widget main-window (QWidget)
+  ())
 

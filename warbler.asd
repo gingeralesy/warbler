@@ -1,8 +1,21 @@
+#|
+ This file is part of Warbler Weekly Planner
+ (c) 2015 Janne Pakarinen
+ Author: Janne Pakarinen <gingeralesy@gmail.com>
+ |#
 
-(defsystem "warbler"
+(in-package #:cl-user)
+(asdf:defsystem "warbler"
   :name "Warbler"
-  :author "Janne"
+  :version "0.0.0"
+  :author "Janne Pakarinen <gingeralesy@gmail.com>"
+  :maintainer "Janne Pakarinen <gingeralesy@gmail.com>"
   :description "Weekly planner for projects and events."
-  :components ((:file "warbler"))
-  :depends-on (:qtools :qtcore :qtgui :q+))
+  :homepage "https://github.com/gingeralesy/warbler"
+  :components ((:file "packages")
+               (:file "warbler"))
+  :depends-on (:qtools
+               :qtcore
+               :qtgui
+               :q+)) ;; TODO: remove q+ at some point
 
